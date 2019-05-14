@@ -2,8 +2,10 @@ pipeline {
   agent {
       label 'linux && amd64 && ubuntu-1804 && docker'
   }
+
   parameters {
     booleanParam(name: "push", defaultValue: false)
+    string(name: 'PASSPHRASE', defaultValue: '', description: 'passphrase used to sign images')
   }
   options {
     timeout(time: 1, unit: 'HOURS')
@@ -28,7 +30,7 @@ pipeline {
       }
       steps {
         withDockerRegistry(url: "https://index.docker.io/v1/", credentialsId: 'dockerbuildbot-index.docker.io') {
-          sh 'make push'
+          sh 'export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE=$params.PASSPHRASE && make push'
         }
       }
     }
