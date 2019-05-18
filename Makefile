@@ -21,8 +21,12 @@ test: bin/linuxkit
 	docker run --rm ppc64le/alpine uname -a
 	docker run --rm s390x/alpine uname -a
 
-push: bin/linuxkit bin/manifest-tool
+push-unsigned: bin/linuxkit bin/manifest-tool
 	export PATH=$(CURDIR)/bin:$$PATH ; bin/linuxkit pkg push -disable-content-trust -org docker binfmt
+
+push-signed: bin/linuxkit bin/manifest-tool
+		export PATH=$(CURDIR)/bin:$$PATH ; bin/linuxkit pkg push -org docker binfmt
+
 
 clean:
 	rm -f bin/*
