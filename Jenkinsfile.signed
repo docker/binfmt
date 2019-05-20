@@ -1,15 +1,15 @@
-NOTARY_CREDS = [[
+NOTARY_CREDS = [
     $class: 'FileBinding',
     variable: 'CONTENT_TRUST_KEY',
     credentialsId: 'orca-signing-key.pem',
-]]
+]
 
-DOCKER_HUB_CREDS = [[
+DOCKER_HUB_CREDS = [
     $class: 'UsernamePasswordMultiBinding',
     usernameVariable: 'REGISTRY_USERNAME',
     passwordVariable: 'DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE',
     credentialsId: 'orcaeng-hub.docker.com',
-]]
+]
 
 pipeline {
   agent {
