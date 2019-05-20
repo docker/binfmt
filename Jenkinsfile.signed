@@ -11,11 +11,6 @@ DOCKER_HUB_CREDS = [
     credentialsId: 'orcaeng-hub.docker.com',
 ]
 
-TRUST_CREDS = [
-    $class: 'FileBinding',
-    variable: 'CONTENT_TRUST_KEY',
-    credentialsId: 'orca-signing-key.pem',
-
 
 pipeline {
   agent {
