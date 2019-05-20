@@ -29,7 +29,7 @@ pipeline {
       }
       steps {
         withDockerRegistry(url: "https://index.docker.io/v1/", credentialsId: 'dockerbuildbot-index.docker.io') {
-          sh 'make push'
+          sh 'make push-unsigned'
         }
       }
     }
