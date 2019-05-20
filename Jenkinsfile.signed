@@ -11,6 +11,12 @@ DOCKER_HUB_CREDS = [
     credentialsId: 'orcaeng-hub.docker.com',
 ]
 
+TRUST_CREDS = [
+    $class: 'FileBinding',
+    variable: 'CONTENT_TRUST_KEY',
+    credentialsId: 'orca-signing-key.pem',
+
+
 pipeline {
   agent {
       label 'linux && amd64 && ubuntu-1804 && docker'
@@ -42,8 +48,8 @@ pipeline {
       steps {
         withDockerRegistry(url: "https://index.docker.io/v1/", credentialsId: 'dockerbuildbot-index.docker.io') {
           withCredentials([DOCKER_HUB_CREDS, NOTARY_CREDS]) {
-            sh 'docker trust key load /trust-key'
-            sh 'make DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE=params.DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE push-signed'
+            sh 'docker trust key load $CONTENT_TRUST_KEY'
+            sh 'make push-signed'
           }
         }
       }
