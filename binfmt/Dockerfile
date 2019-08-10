@@ -54,16 +54,15 @@ RUN make install
 
 FROM linuxkit/alpine:27df8a8be139cd19cd7348c21efca8843b424f2b AS mirror
 
-RUN apk add --no-cache go musl-dev
-ENV GOPATH=/go PATH=$PATH:/go/bin
+COPY --from=qemu usr/bin/qemu-* tmp/dist/
+COPY main.go tmp/binfmt/
 
-COPY main.go /go/src/binfmt/
-RUN go-compile.sh /go/src/binfmt
+RUN apk add --no-cache go musl-dev \
+ && GOBIN=/tmp/dist go-compile.sh /tmp/binfmt
 
 FROM scratch
 ENTRYPOINT []
 WORKDIR /
-COPY --from=qemu usr/bin/qemu-* usr/bin/
-COPY --from=mirror /go/bin/binfmt usr/bin/binfmt
+COPY --from=mirror /tmp/dist/* usr/bin/
 COPY etc/binfmt.d/00_linuxkit.conf etc/binfmt.d/00_linuxkit.conf
 CMD ["/usr/bin/binfmt"]
