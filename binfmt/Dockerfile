@@ -1,5 +1,5 @@
 FROM debian@sha256:2f04d3d33b6027bb74ecc81397abe780649ec89f1a2af18d7022737d0482cefe AS qemu
-ARG VERSION=v4.1.0
+ARG VERSION=v4.2.0
 RUN apt-get update && \
     apt-get install -y \
         build-essential \
@@ -10,7 +10,7 @@ RUN apt-get update && \
         pkg-config \
         python
 
-RUN git clone -b moby/$VERSION https://github.com/moby/qemu && \
+RUN git clone -b $VERSION https://github.com/qemu/qemu && \
   	cd qemu && scripts/git-submodule.sh update \
     		ui/keycodemapdb \
     		tests/fp/berkeley-testfloat-3 \
